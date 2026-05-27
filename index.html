@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Data Peserta Jamaah</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:20px;
+    color:#111827;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    margin-bottom:20px;
+}
+
+.header h1{
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+/* =========================
+   SEARCH BOX
+========================= */
+
+.search-box{
+    width:100%;
+}
+
+.search-box input{
+    width:100%;
+    padding:16px 20px;
+    border:none;
+    border-radius:20px;
+    font-size:15px;
+    outline:none;
+    background:#ffffff;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-container{
+    width:100%;
+    overflow:auto;
+    background:#ffffff;
+    border-radius:24px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:2200px;
+}
+
+/* =========================
+   STICKY HEADER
+========================= */
+
+thead th{
+    background:#111827;
+    color:#ffffff;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+th{
+    padding:16px;
+    text-align:left;
+    font-size:14px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+td{
+    padding:14px 16px;
+    border-bottom:1px solid #e5e7eb;
+    font-size:14px;
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+tbody tr{
+    transition:0.2s;
+}
+
+tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* =========================
+   FOTO
+========================= */
+
+.photo{
+    width:70px;
+    height:70px;
+    border-radius:14px;
+    object-fit:cover;
+    border:2px solid #e5e7eb;
+}
+
+/* =========================
+   BUTTON FILE
+========================= */
+
+.file-btn{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:12px;
+    background:#2563eb;
+    color:#ffffff;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:600;
+}
+
+.file-btn:hover{
+    background:#1d4ed8;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* SISKOPATUH */
+
+.active{
+    background:#22c55e;
+    color:#ffffff;
+}
+
+.pending{
+    background:#facc15;
+    color:#111827;
+}
+
+.nonactive{
+    background:#ef4444;
+    color:#ffffff;
+}
+
+/* =========================
+   FLOATING CARD
+========================= */
+
+.floating-card{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#111827;
+    color:#ffffff;
+    padding:20px 24px;
+    border-radius:24px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.25);
+    z-index:999;
+    min-width:240px;
+}
+
+.floating-card h3{
+    font-size:14px;
+    font-weight:500;
+    margin-bottom:8px;
+}
+
+.floating-card h2{
+    font-size:28px;
+    font-weight:700;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+    padding:40px;
+    text-align:center;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    body{
+        padding:12px;
+    }
+
+    .header h1{
+        font-size:24px;
+    }
+
+    .search-box input{
+        padding:14px 16px;
+        font-size:14px;
+    }
+
+    .floating-card{
+        left:12px;
+        right:12px;
+        bottom:12px;
+        min-width:auto;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="header">
+
+    <h1>Data Peserta Jamaah</h1>
+
+    <div class="search-box">
+
+        <input 
+            type="text"
+            id="searchInput"
+            placeholder="Cari nama, paspor, NIK, whatsapp, status, ID jamaah..."
+        >
+
+    </div>
+
+</div>
+
+<!-- =========================
+     TABLE
+========================= -->
+
+<div class="table-container">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Upload Foto</th>
+                <th>Nama Lengkap</th>
+                <th>Status SISKOPATUH</th>
+                <th>ID Jamaah</th>
+                <th>No Paspor</th>
+                <th>Masa Berlaku Paspor</th>
+                <th>Status Paspor</th>
+                <th>NIK</th>
+                <th>Riwayat Penyakit</th>
+                <th>No WhatsApp</th>
+                <th>Kontak Darurat</th>
+                <th>Hubungan</th>
+                <th>No Darurat</th>
+                <th>Upload Paspor</th>
+                <th>Upload KTP</th>
+                <th>Tgl. Input</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="tableBody">
+
+            <tr>
+                <td colspan="16" class="loading">
+                    Memuat data...
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- =========================
+     FLOATING CARD
+========================= -->
+
+<div class="floating-card">
+
+    <h3>Jumlah Peserta</h3>
+
+    <h2 id="jumlahPeserta">
+        0
+    </h2>
+
+</div>
+
+<script>
+
+/* =========================================
+   GOOGLE SHEET
+========================================= */
+
+const sheetURL =
+'https://docs.google.com/spreadsheets/d/1WB7xv6kI29xmeJh-iht_emcJr3ul-Wh0fWZ3T6guMok/gviz/tq?tqx=out:json&gid=424839537';
+
+let allData = [];
+
+/* =========================================
+   FORMAT TANGGAL
+========================================= */
+
+function formatTanggal(value){
+
+    if(!value) return '';
+
+    const match = value.match(/Date\((\d+),(\d+),(\d+)\)/);
+
+    if(match){
+
+        const year  = parseInt(match[1]);
+        const month = parseInt(match[2]) + 1;
+        const day   = parseInt(match[3]);
+
+        const dd = String(day).padStart(2,'0');
+        const mm = String(month).padStart(2,'0');
+
+        return `${dd}/${mm}/${year}`;
+
+    }
+
+    return value;
+
+}
+
+/* =========================================
+   CONVERT GOOGLE DRIVE LINK
+========================================= */
+
+function convertDriveLink(url){
+
+    if(!url) return '';
+
+    const match = url.match(/[-\w]{25,}/);
+
+    if(match){
+
+        return `https://drive.google.com/thumbnail?id=${match[0]}&sz=w1000`;
+
+    }
+
+    return url;
+
+}
+
+/* =========================================
+   LOAD DATA
+========================================= */
+
+async function loadData(){
+
+    try{
+
+        const response = await fetch(sheetURL);
+
+        const text = await response.text();
+
+        const json = JSON.parse(
+            text.substring(47).slice(0,-2)
+        );
+
+        const rows = json.table.rows;
+
+        allData = rows.map(row => {
+
+            const c = row.c;
+
+            return {
+
+                foto           : c[0]?.v || '',
+                nama           : c[1]?.v || '',
+                status         : c[2]?.v || '',
+                idjamaah       : c[3]?.v || '',
+                paspor         : c[4]?.v || '',
+                berlaku        : formatTanggal(c[5]?.f || c[5]?.v || ''),
+                statuspaspor   : c[6]?.v || '',
+                nik            : c[7]?.v || '',
+                penyakit       : c[8]?.v || '',
+                whatsapp       : c[9]?.v || '',
+                kontak         : c[10]?.v || '',
+                hubungan       : c[11]?.v || '',
+                nodarurat      : c[12]?.v || '',
+                uploadpaspor   : c[13]?.v || '',
+                uploadktp      : c[14]?.v || '',
+                tglinput       : formatTanggal(c[15]?.f || c[15]?.v || '')
+
+            };
+
+        });
+
+        renderTable(allData);
+
+    }catch(error){
+
+        document.getElementById('tableBody').innerHTML = `
+            <tr>
+                <td colspan="16" class="loading">
+                    Gagal mengambil data
+                </td>
+            </tr>
+        `;
+
+        console.log(error);
+
+    }
+
+}
+
+/* =========================================
+   RENDER TABLE
+========================================= */
+
+function renderTable(data){
+
+    const tableBody =
+        document.getElementById('tableBody');
+
+    if(data.length === 0){
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="16" class="loading">
+                    Data tidak ditemukan
+                </td>
+            </tr>
+        `;
+
+        updateTotal(0);
+
+        return;
+
+    }
+
+    let html = '';
+
+    data.forEach(item => {
+
+        let statusClass = 'pending';
+
+        const status =
+            item.status.toString().toLowerCase();
+
+        if(
+            status.includes('aktif') ||
+            status.includes('approved')
+        ){
+
+            statusClass = 'active';
+
+        }else if(
+            status.includes('nonaktif') ||
+            status.includes('reject')
+        ){
+
+            statusClass = 'nonactive';
+
+        }
+
+        html += `
+
+        <tr>
+
+            <td>
+                <img 
+                    src="${convertDriveLink(item.foto)}"
+                    class="photo"
+                    onerror="this.src='https://via.placeholder.com/70x70?text=Foto'"
+                >
+            </td>
+
+            <td>${item.nama}</td>
+
+            <td>
+                <span class="status ${statusClass}">
+                    ${item.status}
+                </span>
+            </td>
+
+            <td>${item.idjamaah}</td>
+
+            <td>${item.paspor}</td>
+
+            <td>${item.berlaku}</td>
+
+            <td>${item.statuspaspor}</td>
+
+            <td>${item.nik}</td>
+
+            <td>${item.penyakit}</td>
+
+            <td>${item.whatsapp}</td>
+
+            <td>${item.kontak}</td>
+
+            <td>${item.hubungan}</td>
+
+            <td>${item.nodarurat}</td>
+
+            <td>
+                <a 
+                    href="${item.uploadpaspor}" 
+                    target="_blank"
+                    class="file-btn"
+                >
+                    Lihat File
+                </a>
+            </td>
+
+            <td>
+                <a 
+                    href="${item.uploadktp}" 
+                    target="_blank"
+                    class="file-btn"
+                >
+                    Lihat File
+                </a>
+            </td>
+
+            <td>${item.tglinput}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+    tableBody.innerHTML = html;
+
+    updateTotal(data.length);
+
+}
+
+/* =========================================
+   UPDATE TOTAL
+========================================= */
+
+function updateTotal(total){
+
+    document.getElementById('jumlahPeserta')
+    .innerHTML = total;
+
+}
+
+/* =========================================
+   SEARCH
+========================================= */
+
+document
+.getElementById('searchInput')
+.addEventListener('keyup', function(){
+
+    const keyword =
+        this.value.toLowerCase();
+
+    const filtered = allData.filter(item => {
+
+        return (
+
+            item.nama.toString().toLowerCase().includes(keyword) ||
+            item.status.toString().toLowerCase().includes(keyword) ||
+            item.idjamaah.toString().toLowerCase().includes(keyword) ||
+            item.paspor.toString().toLowerCase().includes(keyword) ||
+            item.nik.toString().toLowerCase().includes(keyword) ||
+            item.whatsapp.toString().toLowerCase().includes(keyword) ||
+            item.kontak.toString().toLowerCase().includes(keyword) ||
+            item.hubungan.toString().toLowerCase().includes(keyword) ||
+            item.nodarurat.toString().toLowerCase().includes(keyword)
+
+        );
+
+    });
+
+    renderTable(filtered);
+
+});
+
+/* =========================================
+   LOAD AWAL
+========================================= */
+
+loadData();
+
+</script>
+
+</body>
+</html>
